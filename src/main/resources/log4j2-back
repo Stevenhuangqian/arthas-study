@@ -1,0 +1,29 @@
+Configuration:
+  status: debug
+
+  appenders: # 包含控制台和文件两个appender
+#    Console:
+#      name: LogToConsole
+#      PatternLayout:
+#        Pattern: "%d{yyyy-MM-dd HH:mm:ss} [%p] %c:[%L] %m%n"
+    RollingFile:
+      - name: LogToRollingFile
+        fileName: logs/log4j2.log
+        filePattern: "logs/log4j2.log.%d{yyyy-MM-dd}.gz" # 带有后缀名会自动压缩
+        PatternLayout:
+          pattern: "%d{yyyy-MM-dd HH:mm:ss} [%p]  %m%n"
+        Policies:
+          TimeBasedTriggeringPolicy: # 基于时间的trigger，每天一个文件
+            interval: 1
+  Loggers:
+    logger:
+      - name: com.example.demo
+        level: debug
+        additivity: false
+        AppenderRef:
+#          - ref: LogToConsole
+          - ref: LogToRollingFile
+    Root:
+      level: error
+      AppenderRef:
+        ref: LogToRollingFile
